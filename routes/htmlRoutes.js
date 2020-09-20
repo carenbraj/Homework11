@@ -1,14 +1,16 @@
 // DEPENDENCIES
 const path = requie("path")
+const router = require("express").Router()
 
 // ROUTING
-module.exports = function(app) {
+
 // HTML GET Requests
-app.get("/index", function (req, res) {
-    res.sendFile(path.join(_dirname, "../htmlFiles/index.html"))
+router.get("/*", function (req, res) {
+    res.sendFile(path.join(_dirname, "../public/index.html"))
 })
 
-app.get("/index", function (req, res) {
-    res.sendFile(path.join(_dirname, "../htmlFiles/notes.html"))
+router.get("/notes", function (req, res) {
+    res.sendFile(path.join(_dirname, "../public/notes.html"))
 })
-}
+
+module.exports = router;

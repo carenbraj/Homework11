@@ -2,23 +2,24 @@
 // We are linking our routes to a series of "data" sources.
 // These data sources hold arrays of information on table-data, waitinglist, etc.
 
-const noteData = require("../data/noteData")
-const noteListData = require("../data/noteListData")
+const router = require("express").Router();
+const store = require("../db/store.js")
+
 
 // ROUTING  
 
-module.exports = function(app) {
-    app.get("/api/notes", function(req, res) {
-       res.json(noteData) 
+
+    router.get("/api/notes", function(req, res) {
+       store.
+       getNotes()
+       .then(notes => res.json(notes))
+       .catch(err => res.status(500).json(err))
     })
-    app.get("/api/notes", function(req, res) {
-        res.json(noteListData) 
-     })
-}
+
 
 // API POST Requests
 
-app.post("api/notes", function(req, res) {
+router.post("api/notes", function(req, res) {
     if (noteData.length < 0) {
         noteData.push(req.body)
         res.json(true)
@@ -30,10 +31,11 @@ app.post("api/notes", function(req, res) {
 })
 
 // code tocould clear out the notes while working with the functionality.
-app.post("/api/clear", function(req, res) {
+router.delete("/api/:id", function(req, res) {
     // Empty out the arrays of data
     noteData.length = 0;
-    noteListData.length = 0;
 
     res.json({ ok: true })
   })
+
+  module.exports = router;
