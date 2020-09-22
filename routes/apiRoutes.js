@@ -10,8 +10,7 @@ const store = require("../db/store.js")
 
 
     router.get("/api/notes", function(req, res) {
-       store.
-       getNotes()
+       store.getNotes()
        .then(notes => res.json(notes))
        .catch(err => res.status(500).json(err))
     })
@@ -20,22 +19,16 @@ const store = require("../db/store.js")
 // API POST Requests
 
 router.post("api/notes", function(req, res) {
-    if (noteData.length < 0) {
-        noteData.push(req.body)
-        res.json(true)
-    }
-    else {
-        noteListData.push(req.body)
-        res.json(false)
-    }
+    store. addNotes(req.body)
+    .then(notes => res.json(notes))
+    .catch(err => res.status(500).json(err))
 })
 
-// code tocould clear out the notes while working with the functionality.
-router.delete("/api/:id", function(req, res) {
-    // Empty out the arrays of data
-    noteData.length = 0;
-
-    res.json({ ok: true })
+// code to clear out the notes while working with the functionality.
+router.delete("/store/:id", function(req, res) {
+    store. removeNotes(req.body)
+    .then(notes => res.json(notes))
+    .catch(err => res.status(500).json(err))
   })
 
   module.exports = router;

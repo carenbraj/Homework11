@@ -1,0 +1,46 @@
+const util = require("util");
+const fs = require("fs");
+
+class Notes {
+    constructor() {
+        this.idNotes = 0;
+    }
+    read() {
+        return readFileAsyn("db/db.json", "utf8");
+    }
+    write(note) {
+        return writeFileAsync("db/db.json", JSON.stringify(note))
+    }
+    getNotes() {
+        console.log("get notes")
+        return this.read().then(notes => {
+            console.log(notes)
+            const notesArray;
+            try {
+                notesArray = [].concat(JSON.parse(notes));
+            }
+            catch (err) {
+                notesArray = [];
+            }
+            return notesArray;
+        })
+    }
+    addNotes(note) {
+        console.log("add notes");
+        const { title, text } = note;
+        const newNote = { title, text, id: ++this.idNotes }
+        return this.getNotes()
+            .then(notes => [...notes, newNote])
+            .then(updateNotes => this.write(updateNotes))
+            .then(() => newNote)
+
+    }
+    removeNote(id) {
+        console.log("remove notes");
+        return this.getNotes()
+            .then(notes => notes.filter(note => note.id !== parseInt(id)))
+            .then(updatedNotes => this.write(updatedNotes))
+    }
+}
+
+module.exports = new Notes();
