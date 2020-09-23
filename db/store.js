@@ -1,6 +1,9 @@
 const util = require("util");
 const fs = require("fs");
 
+const readFileAsyn = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
 class Notes {
     constructor() {
         this.idNotes = 0;
@@ -14,8 +17,8 @@ class Notes {
     getNotes() {
         console.log("get notes")
         return this.read().then(notes => {
-            console.log(notes)
-            const notesArray;
+            console.log(notes);
+            let notesArray;
             try {
                 notesArray = [].concat(JSON.parse(notes));
             }
@@ -43,4 +46,4 @@ class Notes {
     }
 }
 
-module.exports = new Notes();
+module.exports = Notes;
